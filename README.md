@@ -81,7 +81,7 @@ A broken USB session is a logging-system event, not by itself evidence that the 
 
 ### AI-assisted engineering
 
-I use AI development tools to turn concrete needs into working software. The portfolio focuses on the engineering decisions that remain my responsibility: defining the problem, interpreting the operating constraints, reviewing behavior, investigating failures and checking results. AI assistance is a development method; it is not evidence that a feature works. File-by-file AI authorship or a specific assistant/model is not claimed without the corresponding development record.
+I use AI development tools to turn concrete needs into working software. My engineering responsibilities include defining the problem, interpreting the operating constraints, reviewing behavior, investigating failures and checking results. AI assistance is a development method; it is not evidence that a feature works. File-by-file AI authorship or a specific assistant/model is not claimed without the corresponding development record.
 
 ## Getting Started
 

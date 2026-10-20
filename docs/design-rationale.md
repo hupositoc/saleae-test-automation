@@ -1,6 +1,6 @@
 # Documentation and graphic design rationale
 
-This is an independent portfolio design adapted from published principles, not a Toss or KRDS certification, affiliation, or complete implementation of either component library.
+This is an independent documentation design adapted from published principles, not a Toss or KRDS certification, affiliation, or complete implementation of either component library.
 
 ## Source guidance
 

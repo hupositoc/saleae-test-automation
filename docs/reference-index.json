@@ -137,7 +137,7 @@
     "readme_sha256": "357f718a94c879bfcc7d647a8ea2d192d5abeee6a784c74d5bff2f4e518e00ee",
     "fetched_utc": "2026-10-20T05:42:43.079843+00:00",
     "pattern": "Operational reference depth",
-    "interpretation": "Organizes extensive installation, dependency and option material. Keep the portfolio entry readable and put detailed operating reference in linked documents."
+    "interpretation": "Organizes extensive installation, dependency and option material. Keep the project introduction readable and put detailed operating reference in linked documents."
   },
   {
     "repository": "trekhleb/javascript-algorithms",
@@ -467,7 +467,7 @@
     "readme_sha256": "bb0869848a2063e405b141aa6fae8b10f132ac45036f613459e2d778b7609619",
     "fetched_utc": "2026-10-20T05:42:45.416994+00:00",
     "pattern": "An intentionally short README",
-    "interpretation": "Uses a small description with links to full documentation. This is a useful counterexample: popularity does not mean the shortest README fits a detailed personal portfolio."
+    "interpretation": "Uses a small description with links to full documentation. This is a useful counterexample: popularity does not mean the shortest README fits a detailed project documentation."
   },
   {
     "repository": "electron/electron",

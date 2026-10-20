@@ -6,9 +6,9 @@ The source snapshot was collected on 2026-10-20. GitHub repository search used `
 
 The full READMEs were downloaded locally, section structures and representative passages were inspected, and the observations below were synthesized. The Next.js root points to its package README, which was followed separately. This is a review of project presentation and documentation—not an audit of all source code or proof that repository popularity caused an author's career success.
 
-Stars are selection metadata, not a proxy for code quality, scientific validity, individual authorship or portfolio effectiveness. Raw third-party README snapshots remain outside the published repositories. The published index retains source URLs, retrieval times and content digests for traceability.
+Stars are selection metadata, not a proxy for code quality, scientific validity, individual authorship or documentation effectiveness. Raw third-party README snapshots remain outside the published repositories. The published index retains source URLs, retrieval times and content digests for traceability.
 
-## Findings adopted for this portfolio
+## Findings adopted for this project
 
 1. Start with the job and the user, then show the smallest credible path to value.
 2. Put evidence and status next to claims. Do not turn an installation command into a successful-build claim.
@@ -18,9 +18,9 @@ Stars are selection metadata, not a proxy for code quality, scientific validity,
 
 ## Exact outline selected
 
-The section order from [Best-README-Template](https://github.com/othneildrew/Best-README-Template) is retained: **About The Project** (including **Built With**), **Getting Started** (including **Prerequisites** and **Installation**), **Usage**, **Roadmap**, **Contributing**, **License**, **Contact**, **Acknowledgments**. Project-specific nested subsections add purpose, enabled work, implementation decisions and evidence. The template is distributed under the Unlicense; it does not determine the license of this portfolio's source code.
+The section order from [Best-README-Template](https://github.com/othneildrew/Best-README-Template) is retained: **About The Project** (including **Built With**), **Getting Started** (including **Prerequisites** and **Installation**), **Usage**, **Roadmap**, **Contributing**, **License**, **Contact**, **Acknowledgments**. Project-specific nested subsections add purpose, enabled work, implementation decisions and evidence. The template is distributed under the Unlicense; it does not determine the license of this project's source code.
 
-The narrative is original and grounded in the author's source and operating account. No repository's adoption numbers, performance statistics, logos or personal achievements are transferred to this portfolio.
+The narrative is original and grounded in the author's source and operating account. No repository's adoption numbers, performance statistics, logos or personal achievements are transferred to this project.
 
 ## Source-by-source analysis
 
@@ -134,7 +134,7 @@ Provides a minimal runnable example and links build/support material. Adopt exec
 - Observed structure: INSTALLATION, RELEASE FILES, Recommended, Alternatives, Misc.
 - Pattern: **Operational reference depth**.
 
-Organizes extensive installation, dependency and option material. Keep the portfolio entry readable and put detailed operating reference in linked documents.
+Organizes extensive installation, dependency and option material. Keep the project introduction readable and put detailed operating reference in linked documents.
 
 ### 15. [trekhleb/javascript-algorithms](https://github.com/trekhleb/javascript-algorithms)
 
@@ -398,7 +398,7 @@ Provides dependencies, build paths, file structure and screenshots. Adopt a sour
 - Observed structure: shadcn/ui, Documentation, Contributing, License.
 - Pattern: **An intentionally short README**.
 
-Uses a small description with links to full documentation. This is a useful counterexample: popularity does not mean the shortest README fits a detailed personal portfolio.
+Uses a small description with links to full documentation. This is a useful counterexample: popularity does not mean the shortest README fits a detailed project documentation.
 
 ### 48. [electron/electron](https://github.com/electron/electron)
 
