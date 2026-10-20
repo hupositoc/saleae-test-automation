@@ -1,40 +1,152 @@
-# Saleae Test Automation | 시험 데이터 수집·복구 도구
+<a id="readme-top"></a>
 
-시험 중 계측 장치 연결이 끊기거나 캡처가 중단되면 관측 데이터에 공백이 생긴다. 수집 제어와 장애 감시·복구를 별도 도구로 구성한 프로젝트다.
+![Saleae Test Automation: Scheduled evidence capture for marine Type Approval testing](docs/assets/overview.svg)
 
-## 기술과 구성
+# Saleae Test Automation
 
-Python · PySide6 · Saleae Automation API · PowerShell
+**Scheduled evidence capture for marine Type Approval testing.**
+
+Extend the Saleae workflow with scheduled recording windows and duration-controlled capture so a marine control and monitoring module can be observed through a PC during performance testing.
+
+| At a glance | |
+|---|---|
+| Context | Marine Test Engineering |
+| Current evidence | Used in product performance logging; hardware integration not rerun in this checkout |
+| Stack | Python, PySide6, Saleae Logic 2 Automation API, PowerShell |
+| Author | [hupositoc](https://github.com/hupositoc) |
+
+[Case study](docs/case-study.md) · [Architecture](docs/architecture.md) · [Validation](docs/validation.md) · [Design rationale](docs/design-rationale.md)
+
+## Table of Contents
+
+- [About The Project](#about-the-project)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgments](#acknowledgments)
+
+## About The Project
+
+### Why I built it
+
+The author used this software while supporting Type Approval activities for a Control and Monitoring Module for Marine under test plans referring to DNV-CG-0339 and LR-TS-01. Product identities, employers, laboratories, and customer names are withheld.
+
+The test setup required PC-based logging of CAN/SSI communication and periodic operating-status signals. The workflow needed reservation-style start/stop times and timed recording periods that the author could not obtain from the Saleae application workflow used on site. Repeating these operations manually made the operator part of the acquisition schedule.
+
+### What I implemented
+
+Build a Python desktop application around the vendor Automation API. Keep scheduling and user interaction on the GUI side, execute acquisition in a worker, and retain raw transitions alongside timestamped result and event logs. Separate the capture scheduler from experimental recovery utilities so ordinary recording does not silently inherit device-reset behavior.
+
+### What this made possible
+
+- Prepare start/stop windows before a test instead of manually starting every acquisition.
+- Use duration and interval settings to collect the required portions of product performance data.
+- Review captured clock and SSI behavior together with acquisition events rather than relying only on a live display.
+
+### What happened in practice
+
+The author confirms that the scheduler was used during actual product performance logging. Burst and surge energy also affected the PC USB path through the measurement setup and caused device disconnections. A USB isolator was introduced and resolved that connection problem. The repository does not attribute that physical-layer fix to its recovery code.
+
+### Built With
+
+Python, PySide6, Saleae Logic 2 Automation API, PowerShell. Dependencies provide integration capabilities; the source links below identify the project-specific behavior.
+
+### Engineering decisions
+
+### Use the vendor API
+
+Explicit capture calls are more controllable than operating a desktop window through keystrokes. The legacy recovery experiment remains separate because its keyboard-driven behavior has different risks.
+
+### Separate capture, analysis and evidence
+
+A result summary should remain traceable to a captured interval. Raw transition exports and event timestamps support that traceability.
+
+### Distinguish the device from the measurement chain
+
+A broken USB session is a logging-system event, not by itself evidence that the marine module failed. Physical USB isolation addressed the reported disturbance path.
+
+### Code to inspect
+
+| Source entry point | Responsibility |
+|---|---|
+| [`SaleaeClockMonitorWindow`](sampling-assistant/app.py#L1686) | Owns configuration, scheduled start/stop windows, progress and operator actions. |
+| [`SaleaeMonitorWorker`](sampling-assistant/app.py#L399) | Runs capture work away from the GUI thread. |
+| [`analyze_reference_clock`](sampling-assistant/app.py#L298) | Checks reference-clock behavior in exported transitions. |
+| [`analyze_ssi_clock_rx`](sampling-assistant/app.py#L333) | Analyzes the reconstructed SSI receive-side clock. |
+| [`compare_to_baseline`](sampling-assistant/app.py#L363) | Compares analyzed values with configured reference behavior. |
+| [`hard_restart`](recovery/saleae-guard/saleae_guard.py#L293) | Experimental software recovery path; not the confirmed isolation remedy. |
+
+### AI-assisted engineering
+
+I use AI development tools to turn concrete needs into working software. The portfolio focuses on the engineering decisions that remain my responsibility: defining the problem, interpreting the operating constraints, reviewing behavior, investigating failures and checking results. AI assistance is a development method; it is not evidence that a feature works. File-by-file AI authorship or a specific assistant/model is not claimed without the corresponding development record.
+
+## Getting Started
+
+### Prerequisites
+
+Windows, a compatible Saleae device, Logic 2 with Automation Server enabled, and Python with the listed packages.
+
+### Installation
 
 ```text
-sampling-assistant/: 수집 제어 GUI
-recovery/saleae-guard/: Automation API 기반 캡처 감시
-recovery/burst-recovery/: USB 복구를 시도하는 이전 PowerShell 구현
+git clone https://github.com/hupositoc/saleae-test-automation.git
+cd saleae-test-automation
 ```
 
-## 엔지니어링 관점
+Then follow the project-specific path:
 
-수집 상태 판정, API 오류와 정상 동작의 구분, USB 단절 후 세션 복구, 로그 기반 원인 분석. README에 기록된 현장 수치는 기존 문서의 주장으로, 이번 준비 과정에서 재측정하지 않았다.
+```text
+python -m pip install -r requirements.txt
+python sampling-assistant/app.py
+```
 
-## AI를 활용한 개발 방식
+The commands describe the intended setup. See the validation record for which parts were actually executed in the current environment.
 
-이 프로젝트는 AI 개발 도구를 활용한 문제 해결 포트폴리오의 일부다. AI가 코드를 작성했다는 사실보다 문제 정의, 기술 선택, 결과 검토, 실패 원인 분석과 검증 근거를 중심으로 설명한다. 원본 개발 대화 전체는 확인하지 못했으므로 파일별 수작업·AI 작성 비율이나 사용 모델은 추정하지 않는다.
+## Usage
 
-## 시작하기
+![Four-stage workflow for Saleae Test Automation](docs/assets/workflow.svg)
 
-설치: `python -m pip install -r requirements.txt`
+**Text equivalent:** Plan test windows → Acquire via API → Analyze transitions → Retain test evidence.
 
-- 수집 GUI: `python sampling-assistant/app.py`
-- 감시기 옵션 확인: `python recovery/saleae-guard/saleae_guard.py --help`
-- 이전 PowerShell 복구기는 관리자 권한과 장치 설정 검토 후 사용한다.
-- 기본 출력 경로는 현재 사용자의 홈 폴더 아래 `SaleaeClockMonitor`다.
+Start by defining the intended input and expected behavior. Save the configuration with the experiment or test session so that an output can be interpreted later. Review exceptions and raw evidence before treating a summary as a final conclusion.
 
-## 실행과 현재 상태
+Python AST parsing completed. Actual Logic 2/device capture, timing accuracy, USB disturbance behavior and duration limits have not been rerun in this preparation environment.
 
-Logic 2 Automation Server와 실제 장치가 필요하다. USB 재시작·키 입력 자동화는 시스템 상태를 바꾸므로 격리된 시험 환경에서 검증한다. 하드웨어 동작·복구 성공률은 이번에 검증하지 않았다.
+### Boundaries and known limitations
 
-이번 공개 준비에서는 원본의 선별 복사와 정적 점검을 수행했다. 지원 도구·장비가 없는 환경에서 실행 성공, 운영 성과, 모델 정확도를 새로 확인한 것으로 주장하지 않는다. 상세 검증 결과는 `VALIDATION.md`에 기록한다.
+- Recorded use is author-confirmed; no private test report or certificate is published.
+- Time saved, unattended test hours, recovery success rate and approval completion are not quantified.
+- The software supports a test workflow; it is not a certified instrument and does not issue Type Approval.
+- A watchdog may restart or terminate measurement processes. It must be evaluated independently from normal scheduled capture.
 
-## 출처·공개 범위
+Read the [case study](docs/case-study.md) for the purpose and enabled workflow, and [architecture](docs/architecture.md) for the source-level explanation. The [validation document](docs/validation.md) separates verified checks, author-reported use and pending integration work.
 
-원본 작업 폴더에서 소스를 선별한 공개 준비본이다. 로그·자격증명·로컬 SDK 경로·실제 업무 데이터·실행 바이너리는 제외했다. 기존 저작권 고지와 제3자 라이선스는 유지한다. 원본 파일의 고지와 의존성 이용 조건이 적용되며, 이 저장소의 문서가 새 라이선스를 부여하지 않는다.
+## Roadmap
+
+- [ ] Reproduce a scheduled start/stop test with a small public synthetic signal.
+- [ ] Add device-disconnect and cancellation integration tests without publishing private captures.
+- [ ] Document a neutral export schema and an example test-evidence package.
+
+These are planned tasks, not completed capabilities.
+
+## Contributing
+
+Use an issue to describe a reproducible problem, expected behavior, actual behavior and the environment. For a change, keep the scope focused and attach the relevant test or recording. Do not submit private customer data, identifying test captures, credentials or confidential certification documents.
+
+## License
+
+Existing file-level notices and third-party licenses remain in force. A repository-wide open-source license has not been selected for all archived material. Public visibility does not grant rights beyond those existing terms. Documentation structure attribution does not relicense the software.
+
+## Contact
+
+[hupositoc on GitHub](https://github.com/hupositoc) · [Project issues](https://github.com/hupositoc/saleae-test-automation/issues)
+
+## Acknowledgments
+
+The top-level section order follows [Best-README-Template](https://github.com/othneildrew/Best-README-Template), reviewed under its [Unlicense](https://github.com/othneildrew/Best-README-Template/blob/main/LICENSE.txt). All project narratives are written for this implementation. Visual guidance is attributed in [design rationale](docs/design-rationale.md). The broader 50-repository documentation review informs the reading order, source links and evidence presentation; it does not imply endorsement by those projects.
+
+
+[Engineering decision record](docs/engineering-decisions.md) · [Review of 50 reference repositories](docs/reference-review-50.md)
